@@ -1,0 +1,167 @@
+/* General body styling */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #2c6eaa, #0066cc); /* Softer, darker blue gradient */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
+    flex-direction: column;
+    color: #fff;
+}
+
+/* Main container styling */
+.container {
+    width: 100%;
+    max-width: 900px; /* Limit width for better readability */
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background for an elegant look */
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2); /* Large shadow for depth */
+    text-align: center;
+    backdrop-filter: blur(10px); /* Add frosted glass effect */
+    animation: fadeIn 1s ease-in-out; /* Smooth entry animation */
+}
+
+/* Title styles */
+h1 {
+    color: #fff;
+    background: linear-gradient(90deg, #0066cc, #3399ff); /* More professional gradient with blue tones */
+    padding: 20px;
+    margin: 0;
+    font-size: 36px; /* Reduced font size for better proportion */
+    font-weight: 700;
+    border-radius: 10px;
+    letter-spacing: 3px; /* Spaced letters for elegance */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Strong shadow for depth */
+    text-transform: uppercase; /* Make the title more dynamic */
+    text-align: center;
+    animation: titleAnimation 2s ease-out infinite alternate; /* Pulsing effect */
+}
+
+/* Subtitle styling for question number */
+h2 {
+    font-size: 28px;
+    color: #f0f0f0;
+    margin-top: 20px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+/* Styling for input elements */
+input[type="text"] {
+    padding: 12px;
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px; /* Limit input width */
+    border: 1px solid #fff;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent input field */
+    color: #fff;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+input[type="text"]:focus {
+    background-color: rgba(255, 255, 255, 0.3); /* Focus effect */
+    transform: scale(1.05);
+}
+
+/* Form styling */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Button styling */
+button {
+    padding: 15px 25px;
+    font-size: 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+button:hover {
+    background-color: #218838; /* Darken on hover */
+    transform: scale(1.1); /* Slight scale effect */
+}
+
+/* Hidden messages styling */
+.hidden {
+    display: none;
+    font-size: 20px;
+    color: #dc3545; /* Red color for hidden messages */
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Lock/Wait message styling */
+#locked-message, #wait-message {
+    color: #ffc107; /* Amber for locked or wait messages */
+    font-size: 22px;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Pulsing title effect */
+@keyframes titleAnimation {
+    0% {
+        transform: scale(1);
+        text-shadow: 0 0 20px rgba(0, 102, 204, 0.5), 0 0 30px rgba(0, 102, 204, 0.4);
+    }
+    100% {
+        transform: scale(1.05);
+        text-shadow: 0 0 30px rgba(0, 102, 204, 0.7), 0 0 40px rgba(0, 102, 204, 0.5);
+    }
+}
+
+/* Style for locked/waiting messages */
+#locked-message, #wait-message {
+    font-size: 20px;
+    margin-top: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #ffc107; /* Amber color */
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    body {
+        padding: 20px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 32px; /* Reduced size on mobile */
+    }
+
+    input[type="text"], button {
+        width: 100%; /* Full-width inputs and buttons on smaller screens */
+    }
+}

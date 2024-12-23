@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Page</title>
+    <link rel="stylesheet" href="result.css">
+</head>
+<body>
+    <header>
+        <img src="simpic_logo.png" alt="Logo" style="width: 150px; height: auto; display: block; margin: 0 auto;">
+    </header>
+    <div class="container">
+        <h1>SIMPIC 2025 Grande Final</h1>
+        <h2 class="question-number">Question Number: <span id="question-number">1</span></h2>
+        <div id="submitted-answers"></div>
+    </div>
+
+    <script>
+        const ws = new WebSocket('ws://localhost:8080');
+        const submittedAnswers = document.getElementById('submitted-answers');
+        const questionNumberSpan = document.getElementById('question-number');
+
+        let questionNumber = 1;
+
+        // WebSocket message handling
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+
+            console.log('Received WebSocket message:', data);  
+
+            if (data.type === 'teamSubmit') {
+                displaySubmittedAnswers(data.answers, data.teamId);
+            } else if (data.type === 'markAnswer') {
+                console.log(`Marking answer for subquestion ${data.subQuestion} as ${data.status}`); // Debug line
+                updateAnswerColor(data.subQuestion, data.status);
+            } else if (data.type === 'nextQuestion') {
+                questionNumber = data.questionNumber;
+                questionNumberSpan.textContent = questionNumber;
+                submittedAnswers.innerHTML = '';  // Clear answers for the next question
+            }
+        };
+
+        // Display submitted answers
+        function displaySubmittedAnswers(answers, teamId) {
+            submittedAnswers.innerHTML = `<h2 style="color: white;">Team: ${teamId}</h2>`;
+            Object.keys(answers).forEach((subq) => {
+                const container = document.createElement('div');
+                container.classList.add('sub-container');
+                container.textContent = `Subquestion ${subq}: ${answers[subq]}`;
+                container.setAttribute('data-subq', subq); 
+
+                submittedAnswers.appendChild(container);
+            });
+        }
+
+        // Update the color of the answer based on its status
+        function updateAnswerColor(subQuestion, status) {
+            const subContainer = document.querySelector(`.sub-container[data-subq="${subQuestion}"]`);
+            if (subContainer) {
+                if (status === 'correct') {
+                    subContainer.classList.add('green');
+                    subContainer.classList.remove('red');
+                } else if (status === 'wrong') {
+                    subContainer.classList.add('red');
+                    subContainer.classList.remove('green');
+                }
+            } else {
+                console.error(`Subquestion ${subQuestion} not found in the result page.`);  // Debugging
+            }
+        }
+    </script>
+</body>
+</html>

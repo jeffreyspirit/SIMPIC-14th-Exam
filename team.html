@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Page</title>
+    <link rel="stylesheet" href="team.css">
+</head>
+<body>
+    <header>
+        <img src="simpic_logo.png" alt="Logo" style="width: 100px; height: auto; display: block; margin: 2 auto;">
+    </header>
+
+    <!-- Landing Page (Hidden initially) -->
+    <div id="landing-page" class="container">
+        <h1>Welcome to SIMPIC Grande Final</h1>
+        <p>Enter your team username to start:</p>
+        <label for="username">Username: </label>
+        <input type="text" id="username" required><br><br>
+        <button id="start-btn">Start</button>
+    </div>
+
+    <!-- Question Page (Hidden initially) -->
+    <div id="question-page" class="container" style="display: none;">
+        <h1>SIMPIC 2025 Grande Final</h1>
+        <h2>Question Number: <span id="question-number">1</span></h2>
+        
+        <form id="answer-form">
+            <div id="questions-container">
+                <!-- Subquestion answer boxes + rendered here -->
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        
+        <p id="locked-message" class="hidden">You have already submitted your answer. Please wait for the next question.</p>
+        <p id="wait-message" class="hidden">Another team is currently being reviewed. Please wait.</p>
+        <p id="error-message" class="hidden" style="color: red;">Please fill in all answer fields before submitting.</p>
+    </div>
+
+    <script>
+        const ws = new WebSocket('ws://localhost:8080');
+        const startButton = document.getElementById('start-btn');
+        const landingPage = document.getElementById('landing-page');
+        const questionPage = document.getElementById('question-page');
+        const answerForm = document.getElementById('answer-form');
+        const questionsContainer = document.getElementById('questions-container');
+        const lockedMessage = document.getElementById('locked-message');
+        const waitMessage = document.getElementById('wait-message');
+        const questionNumberSpan = document.getElementById('question-number');
+        const usernameInput = document.getElementById('username');
+        const errorMessage = document.getElementById('error-message');
+
+        let questionNumber = 1;
+        let isLocked = false;
+        let hasSubmitted = false;
+
+        // Function to start the game when "Start" is clicked
+        startButton.addEventListener('click', () => {
+            if (usernameInput.value.trim() === '') {
+                alert('Please enter a username');
+                return;
+            }
+            
+            landingPage.style.display = 'none';  // Hide the landing page
+            questionPage.style.display = 'block';  // Show the question page
+        });
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+
+            if (data.type === 'lockSubmit') {
+                isLocked = true;
+                waitMessage.classList.remove('hidden');
+            } else if (data.type === 'unlockSubmit') {
+                isLocked = false;
+                waitMessage.classList.add('hidden');
+                renderQuestions(data.remainingSubquestions);  // Render remaining questions
+            } else if (data.type === 'nextQuestion') {
+                questionNumber = data.questionNumber;
+                questionNumberSpan.textContent = questionNumber;
+                hasSubmitted = false;
+                lockedMessage.classList.add('hidden');
+                renderQuestions(data.subquestions);  // Render subquestions for the new question
+
+                answerForm.reset();
+                errorMessage.classList.add('hidden');
+            }
+        };
+
+        answerForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (hasSubmitted || isLocked) return;
+
+            const answers = {};
+            let allFilled = true;
+            
+            // Check if all answer boxes are filled
+            questionsContainer.querySelectorAll('input').forEach((input) => {
+                if (!input.value) {
+                    allFilled = false;
+                }
+                answers[input.name] = input.value;
+            });
+
+            if (!allFilled) {
+                errorMessage.classList.remove('hidden');
+                return;
+            } else {
+                errorMessage.classList.add('hidden');
+            }
+
+            ws.send(
+                JSON.stringify({
+                    type: 'teamSubmit',
+                    username: usernameInput.value,
+                    questionNumber: questionNumber,
+                    answers: answers,
+                })
+            );
+
+            hasSubmitted = true;
+            lockedMessage.classList.remove('hidden');
+        });
+
+        function renderQuestions(subquestions) {
+            questionsContainer.innerHTML = '';  // Clear the container before rendering new questions
+            subquestions.forEach((subq) => {
+                const container = document.createElement('div');
+                const label = document.createElement('label');
+                label.textContent = `Subquestion ${subq}: `;
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = subq;
+
+                container.appendChild(label);
+                container.appendChild(input);
+                questionsContainer.appendChild(container);
+            });
+        }
+
+        // Initial rendering of subquestions (can be dynamically updated from the server)
+        renderQuestions(['1', '2', '3']); // Initially render 3 subquestions
+    </script>
+</body>
+</html>

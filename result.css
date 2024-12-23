@@ -1,0 +1,170 @@
+/* General body styling with flexbox */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(to bottom, #2c6eaa, #0066cc); /* Professional blue gradient */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
+    flex-direction: column; /* Stack the title and content vertically */
+    color: black; /* Text color */
+}
+
+/* Main container styling */
+.container {
+    width: 100%;
+    max-width: 1000px; /* Limit width for better readability */
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background for modern effect */
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2); /* Larger shadow for depth */
+    text-align: center; /* Center all text within */
+    animation: fadeIn 1s ease-in-out; /* Smooth entry animation */
+    margin-top: 20px;
+}
+
+/* Title styles */
+h1 {
+    color: #fff;
+    background: linear-gradient(90deg, #0066cc, #3399ff); /* Blue gradient for title */
+    padding: 20px;
+    margin: 0;
+    font-size: 36px; /* Adjusted font size for better readability */
+    font-weight: 700;
+    border-radius: 10px;
+    letter-spacing: 3px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Strong shadow for depth */
+    text-transform: uppercase;
+    text-align: center;
+    animation: titleAnimation 2s ease-out infinite alternate; /* Pulsing effect */
+}
+
+/* Question number styling */
+.question-number {
+    font-size: 28px;
+    margin: 20px 0;
+    color: #f0f0f0;
+    font-weight: 600;
+}
+
+/* Answer container styling */
+.answer-container {
+    margin: 20px auto;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 15px;
+    background: linear-gradient(to bottom, #f9f9f9, #eaeaea);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Add depth */
+}
+
+/* Sub-container for each answer */
+.sub-container {
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    text-align: left; /* Align text left inside sub-container */
+    background-color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover effect for answers */
+.sub-container:hover {
+    transform: scale(1.02); /* Slightly grow on hover */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Button styles */
+.correct-btn, .wrong-btn {
+    margin-right: 10px;
+    padding: 12px 18px;
+    font-size: 16px; /* Adjusted font size for readability */
+    font-weight: bold;
+    border: none;
+    border-radius: 30px; /* Round buttons for a modern look */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth hover effect */
+}
+
+.correct-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.correct-btn:hover {
+    background-color: #218838; /* Darken on hover */
+}
+
+.wrong-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.wrong-btn:hover {
+    background-color: #c82333; /* Darken on hover */
+}
+
+/* Correct and wrong answers styling */
+.sub-container.green {
+    background-color: #d4edda; /* Green for correct */
+    border-color: #c3e6cb;
+}
+
+.sub-container.red {
+    background-color: #f8d7da; /* Red for wrong */
+    border-color: #f5c6cb;
+}
+
+/* General button style */
+button {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-3px); /* Slightly lift on hover */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+    background-color: #4fa1ed;
+    color: white;
+}
+
+.correct {
+    background-color: #90ee90; /* Softer green for correct */
+}
+
+.wrong {
+    background-color: #ff7f7f; /* Softer red for wrong */
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Pulsing title effect */
+@keyframes titleAnimation {
+    0% {
+        transform: scale(1);
+        text-shadow: 0 0 20px rgba(0, 102, 204, 0.5), 0 0 30px rgba(0, 102, 204, 0.4);
+    }
+    100% {
+        transform: scale(1.05);
+        text-shadow: 0 0 30px rgba(0, 102, 204, 0.7), 0 0 40px rgba(0, 102, 204, 0.5);
+    }
+}
