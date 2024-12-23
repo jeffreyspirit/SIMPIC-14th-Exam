@@ -1,7 +1,26 @@
 const WebSocket = require('ws');
 const http = require('http');
-const server = http.createServer();
-const wss = new WebSocket.Server({ server });
+const path = require('path');
+const fs = require('fs');
+
+const server = http.createServer((req, res) => {
+    if (req.method === 'GET' && req.url === '/') {
+        // Serve the index.html file
+        const filePath = path.join(__dirname, 'index.html');
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end('Internal Server Error');
+            } else {
+                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.end(data);
+            }
+        });
+    } else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Not Found');
+    }
+});const wss = new WebSocket.Server({ server });
 
 let fastestTeam = null;
 let currentQuestion = 1;

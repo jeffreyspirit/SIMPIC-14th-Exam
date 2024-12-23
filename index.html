@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket App</title>
+</head>
+<body>
+    <h1>Connected</h1>
+    <script>
+        const ws = new WebSocket('ws://localhost:8080');
+
+        ws.onopen = () => {
+            console.log('Connected to the WebSocket server');
+        };
+
+        ws.onmessage = (event) => {
+            console.log('Message from server:', event.data);
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+
+        ws.onclose = () => {
+            console.log('Disconnected from WebSocket server');
+        };
+    </script>
+</body>
+</html>
